@@ -21,7 +21,7 @@ export default function SongCard({ song }: { song: TSong }) {
                 <Grid container justifyContent="center" spacing={8} >
                     <Grid item>
                         <Typography variant="h5" component="div">
-                            <Link href={`/${song.songid}/song`}>{song.song}</Link> 
+                            <Link href={`/songs/${song.songid}`}>{song.song}</Link> 
                         </Typography>
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">
                             {song.artist}

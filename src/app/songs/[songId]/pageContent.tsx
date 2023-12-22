@@ -1,6 +1,4 @@
 
-"use server"
-
 
 import { TSong, findSongById } from '@/lib/songs';
 import SongCard from './SongCard'
