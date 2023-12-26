@@ -8,7 +8,8 @@ export type TSong = {
     song: string,
     artist: string,
     genre: string[],
-    album: string
+    album: string, 
+    url:string
 }
 
 export type TRetrievalsystem = {
@@ -66,8 +67,9 @@ export async function findSongById(params: { songId: string }) {
             const artist = record.artist
             const genre = record.genre
             const album = record.album
+            const url = 'tgbNymZ7vqY'
 
-            songs.push({ songid, song, artist, genre, album })
+            songs.push({ songid, song, artist, genre, album, url })
 
         })
 
@@ -100,7 +102,7 @@ export async function findSongs(params: { song: string | undefined, artist: stri
             SELECT * FROM public.songs 
             WHERE ((0 = $2 AND LOWER(song) LIKE LOWER($1)) OR 1 = $2 ) 
             AND ( (0 = $4 AND LOWER(artist) LIKE LOWER($3)) OR 1 = $4 )
-            AND song_id IN ('01Yfj2T3YTwJ1Yfy', '01gyRHLquwXDlhkO')
+            LIMIT 30 -- AND song_id IN ('01Yfj2T3YTwJ1Yfy', '01gyRHLquwXDlhkO')
             `,
             [`%${searchSong}%`, optionalSong, `%${searchArtist}%`, optionalArtist]
         );
@@ -114,8 +116,9 @@ export async function findSongs(params: { song: string | undefined, artist: stri
             const artist = record.artist
             const genre = record.genre
             const album = record.album
+            const url = 'tgbNymZ7vqY'
 
-            songs.push({ songid, song, artist, genre, album })
+            songs.push({ songid, song, artist, genre, album , url})
 
         })
 
@@ -143,7 +146,7 @@ export async function findArtists(params: { song: string | undefined }) {
         const query = client.query(`
             SELECT DISTINCT artist FROM public.songs 
             WHERE ((0 = $2 AND LOWER(song) LIKE LOWER($1)) OR 1 = $2 )
-            AND song_id IN ('01Yfj2T3YTwJ1Yfy', '01gyRHLquwXDlhkO')`,
+            `,
             [`%${searchSong}%`, optionalSong]
         );
 
@@ -194,7 +197,8 @@ export async function findRetrievedSongs(params: { songId: string}) {
             const artist = record.artist
             const genre = record.genre
             const album = record.album
-            result.push({retrievalsystemId, retrievalOrder, songid, song, artist, genre, album })
+            const url = 'tgbNymZ7vqY'
+            result.push({retrievalsystemId, retrievalOrder, songid, song, artist, genre, album, url })
         })
         return result
     } catch (error) {

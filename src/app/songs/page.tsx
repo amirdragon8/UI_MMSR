@@ -14,7 +14,6 @@ export default async function Page({ searchParams }: { searchParams: { title: st
   // const artists = [...new Set(songs.map(item => item.artist))]
 
   return <>
-    <Typography>Hello, Next.js! </Typography>
     <PageContent songs={songs} artists={artists} />
   </>
 }

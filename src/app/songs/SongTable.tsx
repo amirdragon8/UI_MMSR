@@ -25,9 +25,10 @@ const columns: readonly Column[] = [
     {
         id: 'genre',
         label: 'Genre',
-        minWidth: 170,
-        format: (value: string[]) => value.join(" • "),
+        minWidth: 300,
+        format: (value: string[]) => value.map((x)=>x.replaceAll("'", "")).join(" • "),
     }
+
 ];
 
 
@@ -47,8 +48,8 @@ export default function SongTable({ songs, retrievalsystemId }: { songs: TSong[]
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="song table" key={retrievalsystemId ? "song-table-" + retrievalsystemId : "song-table-0"}>
+            <TableContainer sx={{ maxHeight: 600 }}>
+                <Table size="small" stickyHeader aria-label="song table" key={retrievalsystemId ? "song-table-" + retrievalsystemId : "song-table-0"}>
                     <TableHead>
                         <TableRow>
                             {columns.map((column) => (
@@ -60,6 +61,9 @@ export default function SongTable({ songs, retrievalsystemId }: { songs: TSong[]
                                     {column.label}
                                 </TableCell>
                             ))}
+                            <TableCell style={{ minWidth: 170 }}>
+                                Video
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -67,7 +71,7 @@ export default function SongTable({ songs, retrievalsystemId }: { songs: TSong[]
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.songid}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.songid} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         {columns.map((column, index) => {
                                             const value = row[column.id];
                                             return (
@@ -85,8 +89,16 @@ export default function SongTable({ songs, retrievalsystemId }: { songs: TSong[]
                                                 </TableCell>
                                             );
                                         })}
+                                        <TableCell>
+                                            <iframe width="240" height="60"
+                                                src={`https://www.youtube.com/embed/${row.url}?enablejsapi=&autoplay=0&mute=0`}>
+                                            </iframe>
+                                        </TableCell>
+
                                     </TableRow>
+
                                 );
+
                             })}
                     </TableBody>
                 </Table>

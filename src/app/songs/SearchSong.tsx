@@ -9,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { write } from 'fs';
-import { Autocomplete, Input, OutlinedInput, Popover, TextField } from '@mui/material';
+import { Autocomplete, Box, Input, OutlinedInput, Popover, TextField } from '@mui/material';
 import React from 'react';
 
 // import { useRouter } from 'next/router';
@@ -44,7 +44,7 @@ export default function SearchSong({ startTransition, artists }: { startTransiti
 
   return (
     <Paper
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
     >
       <SearchPopover handleSearch={handleSearch} artists={artists} />
       <InputBase
@@ -101,6 +101,7 @@ function SearchPopover({ handleSearch, artists }: { handleSearch: any, artists: 
         id="filter-menu"
         open={open}
         onClose={handleClose}
+
         //onClick={handleClose}
         anchorOrigin={{
           vertical: 'top',
@@ -111,35 +112,37 @@ function SearchPopover({ handleSearch, artists }: { handleSearch: any, artists: 
           horizontal: 'left',
         }}
       >
-        Addtional Filters
+
         {/* <div>{`value: ${searchArtist !== null ? `'${searchArtist}'` : 'null'}`}</div>
         <div>{`inputValue: '${searchArtistInput}'`}</div>
         <br /> */}
-        <Autocomplete
-          disablePortal
-          id="combo-box-artist"
-          options={artists}
-          sx={{ width: 300, height: 300 }}
-          value={searchArtist}
-          onChange={(event: any, newValue: string | null) => {
-            setSearchArtist(newValue);
-            handleSearch('artist', newValue)
-          }}
-          inputValue={searchArtistInput}
-          onInputChange={(event, newInputValue) => {
-            setSearchArtistInput(newInputValue);
-          }} 
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearch('artist', searchArtistInput)
+        <Box sx={{ p: 4 }}>
+          <Autocomplete
+            id="combo-box-artist"
+            options={artists}
+            sx={{ width: 300 }}
+            value={searchArtist}
+            onChange={(event: any, newValue: string | null) => {
+              setSearchArtist(newValue);
+              handleSearch('artist', newValue)
+            }}
+            inputValue={searchArtistInput}
+            onInputChange={(event, newInputValue) => {
+              setSearchArtistInput(newInputValue);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch('artist', searchArtistInput)
+              }
+            }}
+            renderInput={(params) =>
+              <TextField {...params}
+                label="Artist"
+              />
             }
-          }}
-          renderInput={(params) =>
-            <TextField {...params}
-              label="Artist"
-            />
-          }
-        />
+          />
+
+        </Box>
         {/* <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Artist"
