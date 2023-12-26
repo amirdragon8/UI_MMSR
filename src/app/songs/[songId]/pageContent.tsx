@@ -1,13 +1,35 @@
+"use client"
 
-
-import { TSong, findSongById } from '@/lib/songs';
+import { TRetrievalsystem, TRetrievedSong, TSong, findSongById } from '@/lib/songs';
 import SongCard from './SongCard'
+import SelectRetrievalsystem from './SelectRetrievalsystem';
+import { useCallback, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import RetrievedSongAccordion from './RetrievedSongAccordion';
 
 
 
-export default async function PageContent({ songId }: { songId: string }) {
+export default function PageContent({ song, retrievalsystems, retrievedSongs }: { song: TSong,  retrievalsystems: TRetrievalsystem[], retrievedSongs:TRetrievedSong[]}) {
 
-    const songs: TSong[] = await findSongById({ songId: "01Yfj2T3YTwJ1Yfy" })
+    const [selectedRetrievalsystem, setSelectRetrievalsystem] = useState<string>(retrievalsystems[0].retrievalsystemId.toString()) // ??
+        
+    // const handleRetrievalsystemChange = (selectedRetrievalsystem:string)=> {
+    //     setSelectRetrievalsystem(selectedRetrievalsystem)
+    //     //sessionStorage.setItem('retrievalsystem', selectedRetrievalsystem)
+    //     //createQueryString('retrievalsystem', selectedRetrievalsystem)
+    // }
 
-    return <SongCard song={songs[0]}></SongCard>
+
+    return (<>
+        {/* <div>{sessionStorage.getItem('retrievalsystem')}</div>
+         */}
+        {/* <SelectRetrievalsystem retrievalsystems={retrievalsystems} selectedRetrievalsystem={selectedRetrievalsystem} setSelectRetrievalsystem={handleRetrievalsystemChange} />
+        <SelectRetrievalsystem retrievalsystems={retrievalsystems} selectedRetrievalsystem={selectedRetrievalsystem} setSelectRetrievalsystem={setSelectRetrievalsystem} /> */}
+        
+        
+        <SongCard song={song}></SongCard>
+        <RetrievedSongAccordion retrievalsystems={retrievalsystems} retrievedSongs={retrievedSongs}></RetrievedSongAccordion>
+    </>
+
+    )
 }

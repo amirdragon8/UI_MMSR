@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { TSong } from '@/lib/songs';
+import Link from 'next/link';
 
 interface Column {
     id: 'song' | 'artist' | 'album' | 'genre';
@@ -22,8 +23,8 @@ const columns: readonly Column[] = [
     { id: 'artist', label: 'Artist', minWidth: 100 },
     { id: 'album', label: 'Album', minWidth: 100 },
     {
-        id: 'genre', 
-        label: 'Genre', 
+        id: 'genre',
+        label: 'Genre',
         minWidth: 170,
         format: (value: string[]) => value.join(" • "),
     }
@@ -31,7 +32,7 @@ const columns: readonly Column[] = [
 
 
 //StickyHeadTable
-export default function SongTable({ songs }: { songs: TSong[] }) {
+export default function SongTable({ songs, retrievalsystemId }: { songs: TSong[], retrievalsystemId?: number }) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -47,7 +48,7 @@ export default function SongTable({ songs }: { songs: TSong[] }) {
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
             <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
+                <Table stickyHeader aria-label="song table" key={retrievalsystemId ? "song-table-" + retrievalsystemId : "song-table-0"}>
                     <TableHead>
                         <TableRow>
                             {columns.map((column) => (
@@ -67,13 +68,20 @@ export default function SongTable({ songs }: { songs: TSong[] }) {
                             .map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.songid}>
-                                        {columns.map((column) => {
+                                        {columns.map((column, index) => {
                                             const value = row[column.id];
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
-                                                    {column.format && Array(value)
-                                                        ? column.format(value as string[])
-                                                        : value}
+                                                    {index === 0 ?
+                                                        <Link href={`/songs/${row.songid}`}>
+                                                            {column.format && Array(value)
+                                                                ? column.format(value as string[])
+                                                                : value}
+                                                        </Link>
+                                                        : column.format && Array(value)
+                                                            ? column.format(value as string[])
+                                                            : value
+                                                    }
                                                 </TableCell>
                                             );
                                         })}
@@ -83,15 +91,17 @@ export default function SongTable({ songs }: { songs: TSong[] }) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={songs.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            {retrievalsystemId ? <></> :
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 100]}
+                    component="div"
+                    count={songs.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            }
         </Paper>
     );
 }
