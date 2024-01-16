@@ -17,7 +17,6 @@ export default async function Page({ params }: { params: { songId: string, retri
         <>  
             <script src="https://cdn.jsdelivr.net/gh/thelevicole/youtube-to-html5-loader@4.0.1/dist/YouTubeToHtml5.js"></script>
             <script>new YouTubeToHtml5();</script>
-            <Typography >TOP 10 recommended songs</Typography>
             <PageContent song={songs[0]} retrievalsystems={retrievalsystems} retrievedSongs={retrievedSongs}/>
         </>
     )

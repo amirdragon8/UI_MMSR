@@ -31,10 +31,11 @@ export default function SongCard({ song }: { song: TSong }) {
                         <source src={`https://www.youtube.com/watch?v=${song.url}`} type="video/mp4"/>
                     </video> */}
                     {/* {`https://www.youtube.com/watch?v=${song.url}?autoplay=1&mute=${mute}`} */}
-                    <iframe width="420" height="315"
-                        src={`https://www.youtube.com/embed/${song.url}?enablejsapi=&autoplay=1&mute=1`}>
-                    </iframe>
-                   
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <iframe width="420" height="315"
+                            src={`https://www.youtube.com/embed/${song.url}?enablejsapi=&autoplay=1&mute=1`}>
+                        </iframe>
+                    </Box>
                 </CardContent>
             </Box>
         </Card>

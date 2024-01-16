@@ -70,9 +70,13 @@ export default function RetrievedSongAccordion({ retrievalsystems, retrievedSong
               <Typography>{rs.retrievalsystem}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>
-                TOP 10 recommended songs with a retrieval system {rs.info}
+            <Typography variant="subtitle1" color="text.secondary" component="div">
+                Description
               </Typography>
+              <Typography sx={{paddingBottom:3}}>
+                {rs.info}
+              </Typography>
+            
               <SongTable songs={filteredSongs} retrievalsystemId={rs.retrievalsystemId}></SongTable>
             </AccordionDetails>
           </Accordion>

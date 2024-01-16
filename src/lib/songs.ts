@@ -1,4 +1,3 @@
-import SearchSong from "@/app/songs/SearchSong";
 import { QueryResultRow, createClient, sql } from "@vercel/postgres";
 import { db } from '@vercel/postgres';
 
@@ -29,7 +28,7 @@ export async function findRetrievalsystem() {
     await client.connect();
 
     try {
-        const query = client.sql`SELECT * FROM public.retrievalsystems`
+        const query = client.sql`SELECT * FROM public.retrievalsystems ORDER BY "retrievalsystemId" DESC`
         const res = await query
 
         const results: TRetrievalsystem[] = []
@@ -67,7 +66,7 @@ export async function findSongById(params: { songId: string }) {
             const artist = record.artist
             const genre = record.genre
             const album = record.album
-            const url = 'tgbNymZ7vqY'
+            const url = record.url
 
             songs.push({ songid, song, artist, genre, album, url })
 
@@ -99,10 +98,10 @@ export async function findSongs(params: { song: string | undefined, artist: stri
 
     try {
         const query = client.query(`
-            SELECT * FROM public.songs 
+            SELECT * FROM public.songs
             WHERE ((0 = $2 AND LOWER(song) LIKE LOWER($1)) OR 1 = $2 ) 
             AND ( (0 = $4 AND LOWER(artist) LIKE LOWER($3)) OR 1 = $4 )
-            LIMIT 30 -- AND song_id IN ('01Yfj2T3YTwJ1Yfy', '01gyRHLquwXDlhkO')
+            LIMIT 300 -- AND song_id IN ('01Yfj2T3YTwJ1Yfy', '01gyRHLquwXDlhkO')
             `,
             [`%${searchSong}%`, optionalSong, `%${searchArtist}%`, optionalArtist]
         );
@@ -116,7 +115,7 @@ export async function findSongs(params: { song: string | undefined, artist: stri
             const artist = record.artist
             const genre = record.genre
             const album = record.album
-            const url = 'tgbNymZ7vqY'
+            const url = record.url
 
             songs.push({ songid, song, artist, genre, album , url})
 
@@ -144,7 +143,7 @@ export async function findArtists(params: { song: string | undefined }) {
 
     try {
         const query = client.query(`
-            SELECT DISTINCT artist FROM public.songs 
+            SELECT DISTINCT artist FROM public.songs
             WHERE ((0 = $2 AND LOWER(song) LIKE LOWER($1)) OR 1 = $2 )
             `,
             [`%${searchSong}%`, optionalSong]
@@ -197,7 +196,7 @@ export async function findRetrievedSongs(params: { songId: string}) {
             const artist = record.artist
             const genre = record.genre
             const album = record.album
-            const url = 'tgbNymZ7vqY'
+            const url = record.url
             result.push({retrievalsystemId, retrievalOrder, songid, song, artist, genre, album, url })
         })
         return result
